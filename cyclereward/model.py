@@ -39,6 +39,7 @@ class CycleReward(nn.Module):
         
         self.blip = blip_pretrain(
             pretrained=cyclereward_args['blip_path'], 
+            med_config='blip/med_config.json',  
             image_size=cyclereward_args['image_size'], 
             vit=cyclereward_args['vit']
         )

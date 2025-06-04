@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as f:
 
 setup(
     name="cyclereward",
-    version="0.1.3",
+    version="0.1.5",
     author="Hyojin Bahng",
     description="Image-text alignment metric trained on cycle consistency preferences",
     packages=find_packages(), 

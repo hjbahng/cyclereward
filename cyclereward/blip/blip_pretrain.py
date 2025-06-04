@@ -12,7 +12,7 @@ from .blip import create_vit, init_tokenizer, load_checkpoint
 
 class BLIP_Pretrain(nn.Module):
     def __init__(self,                 
-                 med_config = 'cyclereward/blip/med_config.json',  
+                 med_config = 'med_config.json',  
                  image_size = 224,
                  vit = 'base',
                  vit_grad_ckpt = False,
