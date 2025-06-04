@@ -1,0 +1,37 @@
+from setuptools import setup, find_packages
+
+setup(
+    name="cycle_reward",
+    version="0.1.0",
+    description="Reward model trained on cycle consistency preferences",
+    packages=find_packages(),
+    include_package_data=True,
+    package_data={"model_name": ["assets/*"]},
+    install_requires=[
+        "sentencepiece==0.2.0",
+        "six==1.17.0",
+        "sniffio==1.3.1",
+        "submitit==1.5.2",
+        "sympy==1.13.1",
+        "tenacity==9.1.2"
+        "tensorboardX==2.6.2.2",
+        "threadpoolctl==3.6.0",
+        "tiktoken==0.9.0",
+        "timm==1.0.15",
+        "tokenizers==0.21.1",
+        "torch==2.6.0",
+        "torchvision==0.21.0",
+        "tqdm",
+        "transformers @ git+https://github.com/huggingface/transformers@716819b8309324302e00a3488a3c3d6faa427f79",
+        "triton==3.2.0",
+        "trl==0.16.1",
+    ],
+    long_description=open("README.md").read(),
+    long_description_content_type="text/markdown",
+    url="https://github.com/hjbahng/cycle_reward",
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+    ],
+    python_requires=">=3.9",
+)
