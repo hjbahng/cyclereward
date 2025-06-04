@@ -31,7 +31,7 @@ def _transform(n_px):
     ])
 
 class CycleReward(nn.Module):
-    def __init__(self, device='cpu', model_type='CycleReward-Combo', max_length=128, fix_rate=0.7):
+    def __init__(self, device='cpu', model_type='CycleReward-Combo', max_length=128, fix_rate=0.7, med_config=None):
         super().__init__()
         self.device = device
         self.model_type = model_type
@@ -39,7 +39,7 @@ class CycleReward(nn.Module):
         
         self.blip = blip_pretrain(
             pretrained=cyclereward_args['blip_path'], 
-            med_config='blip/med_config.json',  
+            med_config=med_config,
             image_size=cyclereward_args['image_size'], 
             vit=cyclereward_args['vit']
         )
@@ -214,7 +214,7 @@ def download_weights(cache_dir="./checkpoints", model_type="CycleReward-Combo"):
     dst_path = os.path.join(cache_dir, f"{model_type}.pth")
     if not os.path.exists(dst_path):
         torch.hub.download_url_to_file(url=_MODELS[model_type], dst=dst_path)
-
+    
 
 def cyclereward(device="cuda", model_type="CycleReward-Combo", cache_dir="./checkpoints"):
     """Initializes the CycleReward model.
@@ -236,11 +236,15 @@ def cyclereward(device="cuda", model_type="CycleReward-Combo", cache_dir="./chec
         The preprocessing function for images.
     """
 
-    model = CycleReward(device=device)
-    model.to(device)
-
     # download weights
     download_weights(cache_dir=cache_dir, model_type=model_type)
+    
+    med_config = os.path.join(cache_dir, 'med_config.json')
+    if not os.path.exists(med_config):
+        torch.hub.download_url_to_file(url=_MODELS["med_config"], dst=med_config)
+
+    model = CycleReward(device=device, med_config=med_config)
+    model.to(device)
 
     # load model
     ckpt_path = os.path.join(cache_dir, f"{model_type}.pth")
@@ -254,5 +258,6 @@ def cyclereward(device="cuda", model_type="CycleReward-Combo", cache_dir="./chec
 _MODELS = {
     "CycleReward-Combo": "https://github.com/hjbahng/cyclereward/releases/download/v1.0.0/CycleReward-Combo.pth",
     "CycleReward-I2T":  "https://github.com/hjbahng/cyclereward/releases/download/v1.0.0/CycleReward-I2T.pth",
-    "CycleReward-T2I": "https://github.com/hjbahng/cyclereward/releases/download/v1.0.0/CycleReward-T2I.pth"
+    "CycleReward-T2I": "https://github.com/hjbahng/cyclereward/releases/download/v1.0.0/CycleReward-T2I.pth",
+    "med_config": "https://github.com/hjbahng/cyclereward/releases/download/v1.0.0/med_config.json"
 }

@@ -4,14 +4,10 @@ with open("README.md", "r", encoding="utf-8") as f:
 
 setup(
     name="cyclereward",
-    version="0.1.5",
+    version="0.1.7",
     author="Hyojin Bahng",
     description="Image-text alignment metric trained on cycle consistency preferences",
     packages=find_packages(), 
-    include_package_data=True,
-    package_data={
-        "cyclereward.blip": ["med_config.json"],
-    },
     install_requires=[
         "sentencepiece",
         "six",
