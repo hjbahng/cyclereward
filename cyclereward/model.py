@@ -6,7 +6,6 @@ import os
 import torch
 import torch.nn as nn
 from PIL import Image
-import zipfile
 
 from .config import cyclereward_args
 from .blip.blip_pretrain import blip_pretrain
@@ -252,7 +251,7 @@ def cyclereward(device="cuda", model_type="CycleReward-Combo", cache_dir="./chec
     return model, model.preprocess
 
 _MODELS = {
-    "CycleReward-Combo": "https://github.com/hjbahng/cycle_reward/releases/download/v1.0.0/CycleReward-Combo.pth",
-    "CycleReward-I2T":  "https://github.com/hjbahng/cycle_reward/releases/download/v1.0.0/CycleReward-I2T.pth",
-    "CycleReward-T2I": "https://github.com/hjbahng/cycle_reward/releases/download/v1.0.0/CycleReward-T2I.pth"
+    "CycleReward-Combo": "https://github.com/hjbahng/cyclereward/releases/download/v1.0.0/CycleReward-Combo.pth",
+    "CycleReward-I2T":  "https://github.com/hjbahng/cyclereward/releases/download/v1.0.0/CycleReward-I2T.pth",
+    "CycleReward-T2I": "https://github.com/hjbahng/cyclereward/releases/download/v1.0.0/CycleReward-T2I.pth"
 }
