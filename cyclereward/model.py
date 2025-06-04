@@ -216,7 +216,7 @@ def download_weights(cache_dir="./checkpoints", model_type="CycleReward-Combo"):
         torch.hub.download_url_to_file(url=_MODELS[model_type], dst=dst_path)
 
 
-def cycle_reward(device="cuda", model_type="CycleReward-Combo", cache_dir="./checkpoints"):
+def cyclereward(device="cuda", model_type="CycleReward-Combo", cache_dir="./checkpoints"):
     """Initializes the CycleReward model.
     
     Parameters

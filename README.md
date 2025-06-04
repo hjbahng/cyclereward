@@ -12,17 +12,17 @@ MIT CSAIL.
 CycleReward is a reward model trained on preferences derived from cycle consistency. Given a forward mapping $$F:X \rightarrow Y$$ and a backward mapping $$G: Y \rightarrow X$$, we define cycle consistency score as the similarity between the original input $$x$$ and its reconstruction $$G(F(x))$$. This score serves as a proxy for preference: higher cycle consistency indicates a preferred output. This provides a more scalable and cheaper signal for learning image-text alignment compared to human supervision. We construct CyclePrefDB, a large-scale preference dataset comprising 866K comparison pairs spanning image-to-text and text-to-image generation, with an emphasis on dense captions and prompts. Trained on this dataset, CycleReward matches or surpasses models trained on human or AI feedback.
 
 ## Quick Start
-Run `pip install cycle_reward`. The following Python code is all you need.
+Run `pip install cyclereward`. The following Python code is all you need.
 
 The basic use case is to measure the alignment between an image and a caption. **A higher score means more similar, lower means more different**. We release three model variants: `CycleReward-Combo`, `CycleReward-I2T`, `CycleReward-T2I`.
 
 ```python
-from cycle_reward import cycle_reward
+from cyclereward import cyclereward
 from PIL import Image
 import torch 
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
-model, preprocess = cycle_reward(device=device, model_type="CycleReward-Combo")
+model, preprocess = cyclereward(device=device, model_type="CycleReward-Combo")
 
 caption = "a photo of a cat"
 image = preprocess(Image.open("image_path")).unsqueeze(0).to(device)

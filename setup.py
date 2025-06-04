@@ -1,19 +1,17 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="cycle_reward",
-    version="0.1.0",
+    name="cyclereward",
+    version="0.1.1",
     description="Reward model trained on cycle consistency preferences",
     packages=find_packages(),
-    include_package_data=True,
-    package_data={"model_name": ["assets/*"]},
     install_requires=[
         "sentencepiece==0.2.0",
         "six==1.17.0",
         "sniffio==1.3.1",
         "submitit==1.5.2",
         "sympy==1.13.1",
-        "tenacity==9.1.2"
+        "tenacity==9.1.2",
         "tensorboardX==2.6.2.2",
         "threadpoolctl==3.6.0",
         "tiktoken==0.9.0",
@@ -22,7 +20,7 @@ setup(
         "torch==2.6.0",
         "torchvision==0.21.0",
         "tqdm",
-        "transformers @ git+https://github.com/huggingface/transformers@716819b8309324302e00a3488a3c3d6faa427f79",
+        "transformers",
         "triton==3.2.0",
         "trl==0.16.1",
     ],
