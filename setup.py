@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="cyclereward",
-    version="0.1.1",
+    version="0.1.2",
     description="Reward model trained on cycle consistency preferences",
     packages=find_packages(),
     install_requires=[
@@ -26,7 +26,7 @@ setup(
     ],
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
-    url="https://github.com/hjbahng/cycle_reward",
+    url="https://github.com/hjbahng/cyclereward",
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
