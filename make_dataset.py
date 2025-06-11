@@ -4,7 +4,6 @@ Generate preference dataset from cycle consistency scores.
 import os
 import json
 import argparse
-from tqdm import tqdm
 import re
 
 
