@@ -9,13 +9,14 @@ MIT CSAIL.
     <img src="images/teaser.jpg" width="1000px">
 </p>
 
-CycleReward is a reward model trained on preferences derived from cycle consistency. Given a forward mapping $$F:X \rightarrow Y$$ and a backward mapping $$G: Y \rightarrow X$$, we define cycle consistency score as the similarity between the original input $$x$$ and its reconstruction $$G(F(x))$$. This score serves as a proxy for preference: higher cycle consistency indicates a preferred output. This provides a more scalable and cheaper signal for learning image-text alignment compared to human supervision. We construct CyclePrefDB, a large-scale preference dataset comprising 866K comparison pairs spanning image-to-text and text-to-image generation, with an emphasis on dense captions and prompts. Trained on this dataset, CycleReward matches or surpasses models trained on human or AI feedback.
+CycleReward is a reward model trained on preferences derived from cycle consistency. Given a forward mapping $$F:X \rightarrow Y$$ and a backward mapping $$G: Y \rightarrow X$$, we define cycle consistency score as the similarity between the original input $$x$$ and its reconstruction $$G(F(x))$$. This score serves as a proxy for preference: higher cycle consistency indicates a preferred output. This provides a more scalable and cheaper signal for learning image-text alignment compared to human supervision. We construct CyclePrefDB, a preference dataset of 866K comparison pairs across image-to-text and text-to-image tasks focusing on dense captions. Trained on this dataset, CycleReward matches or surpasses models trained on human or GPT4V feedback.
 
 ## Quick Start
-Run `pip install cyclereward`. The following Python code is all you need.
+Install with pip:
 
-The basic use case is to measure the alignment between an image and a caption. **A higher score means more similar, lower means more different**. We release three model variants: `CycleReward-Combo`, `CycleReward-I2T`, `CycleReward-T2I`.
+`pip install cyclereward`
 
+Use CycleReward to measure the alignment between an image and a caption (higher is better). 
 ```python
 from cyclereward import cyclereward
 from PIL import Image
@@ -25,28 +26,96 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 model, preprocess = cyclereward(device=device, model_type="CycleReward-Combo")
 
 caption = "a photo of a cat"
-image = preprocess(Image.open("image_path")).unsqueeze(0).to(device)
+image = preprocess(Image.open("cat.jpg")).unsqueeze(0).to(device)
 score = model.score(image, caption) 
 ```
+We release three model variants: 
+- `CycleReward-I2T` trained on image-to-text pairs
+- `CycleReward-T2I` trained on text-to-image pairs
+- `CycleReward-Combo` trained on both, **recommended for best results**
 
-## CyclePrefDB Dataset
-CycleReward is trained on CyclePrefDB, a large-scale preference dataset based on cycle consistency. We provide comparison pairs for both image-to-text (I2T) and text-to-image (T2I) generation, with a focus on dense captions and prompts.
+## Contents
+- [Install](#install)
+- [Dataset](#dataset)
+- [Generate](#generate)
+- [Train](#train)
+- [Citation](#citation)
 
-| Dataset | Number of Pairs |
-| ------ | ------ | 
-| [CyclePrefDB-I2T](https://huggingface.co/datasets/carolineec/CyclePrefDB-I2T) | 398K |
-| [CyclePrefDB-T2I](https://huggingface.co/datasets/carolineec/CyclePrefDB-T2I) | 468K |
+## Install
+Clone this repository and install dependencies:
+```bash
+git clone https://github.com/hjbahng/cyclereward.git
+cd cyclereward
 
-You can use the Hugging Face [Datasets](https://huggingface.co/docs/datasets/quickstart) library to load the datasets:
-```python
-from datasets import load_dataset
+conda create -n cwrd python=3.10
+conda activate cwrd
 
-# Load dataset
-dataset = load_dataset("carolineec/CyclePrefDB-I2T", split='train')
+pip install -r requirements.txt
 ```
 
-## Citation
+## Dataset
+CycleReward is trained on CyclePrefDB, a large-scale preference dataset based on cycle consistency. 
 
+| Dataset | Task | Number of Pairs |
+| :------ | :------ | :------ | 
+| [CyclePrefDB-I2T](https://huggingface.co/datasets/carolineec/CyclePrefDB-I2T) | Image-to-text generation | 398K |
+| [CyclePrefDB-T2I](https://huggingface.co/datasets/carolineec/CyclePrefDB-T2I) | Text-to-image generation | 468K |
+
+You can load them using the Hugging Face `datasets` library:
+```python
+from datasets import load_dataset
+dataset = load_dataset("carolineec/CyclePrefDB-I2T")
+```
+Explore examples on our [dataset viewer](https://cyclereward.github.io/#dataset).
+
+## Generate
+To generate your own comparison pairs using cycle consistency, you'll need:
+- A set of forward models
+- A backward model 
+- Input images or texts
+
+See full configuration in `scripts/generate_i2t.sh` and `scripts/generate_t2i.sh`. We detail each step below:
+
+### 1. Prepare input data
+Download the [DCI](https://github.com/facebookresearch/DCI) dataset. While we use the DCI dataset as an example, you can use **any unpaired text or image data**. When using your own data, format your input as:
+```
+# for image-to-text generation
+image_dataset = [{'real_image': image_path}, ...]
+
+# for text-to-image generation
+text_dataset = [{'real_text': caption}, ...]
+```
+To use sDCI captions, follow their [instructions](https://github.com/facebookresearch/DCI?tab=readme-ov-file#clip-ready).
+
+### 2. Generate comparison pairs and cycle consistency score
+To generate cycle consistency scores using LLaVA-1.5-13B as the forward (I2T) model and Stable Diffusion 3 as the backward (T2I) model:
+```
+python generate.py \
+    --cycle i2t2i \
+    --model_name_or_path llava-hf/llava-1.5-13b-hf \
+    --pretrained_model_name_or_path stabilityai/stable-diffusion-3-medium-diffusers \
+    --dataset DCI \
+    --data_path /path/to/densely_captioned_images \
+    --output_path /path/to/save/results \
+    --cache_dir /path/to/download/models 
+```
+You can repeat this for multiple forward models to construct comparison pairs.
+
+### 3. Build preference dataset
+Once generation is complete, build the preference dataset by comparing their cycle consistency scores:
+```
+python make_dataset.py \
+    --output_path /path/to/save/results \
+    --dataset DCI \
+    --cycle i2t2i \
+    --save_path /path/to/save/preference_dataset
+```
+This will produce a dataset for training the reward model.
+
+## Train
+To train CycleReward, refer to the training scripts `scripts/train_**.sh`.
+
+## Citation
 If you find our work or any of our materials useful, please cite our paper:
 ```
 @article{bahng2025cycle,
