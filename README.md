@@ -36,9 +36,9 @@ We release three model variants:
 
 ## Contents
 - [Install](#install)
-- [Dataset](#dataset)
-- [Generate](#generate)
-- [Train](#train)
+- [CyclePrefDB Dataset](#cycleprefdb-dataset)
+- [Generate Preference Data](#generate-preference-data)
+- [Train Reward Model](#train-reward-model)
 - [Citation](#citation)
 
 ## Install
@@ -47,13 +47,13 @@ Clone this repository and install dependencies:
 git clone https://github.com/hjbahng/cyclereward.git
 cd cyclereward
 
-conda create -n cwrd python=3.10
-conda activate cwrd
+conda create -n crwd python=3.10
+conda activate crwd
 
 pip install -r requirements.txt
 ```
 
-## Dataset
+## CyclePrefDB Dataset
 CycleReward is trained on CyclePrefDB, a large-scale preference dataset based on cycle consistency. 
 
 | Dataset | Task | Number of Pairs |
@@ -68,7 +68,7 @@ dataset = load_dataset("carolineec/CyclePrefDB-I2T")
 ```
 Explore examples on our [dataset viewer](https://cyclereward.github.io/#dataset).
 
-## Generate
+## Generate Preference Data
 To generate your own comparison pairs using cycle consistency, you'll need:
 - A set of forward models
 - A backward model 
@@ -112,7 +112,7 @@ python make_dataset.py \
 ```
 This will produce a dataset for training the reward model.
 
-## Train
+## Train Reward Model
 To train CycleReward, refer to the training scripts `scripts/train_**.sh`.
 
 ## Citation
