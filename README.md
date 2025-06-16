@@ -11,6 +11,15 @@ MIT CSAIL.
 
 CycleReward is a reward model trained on preferences derived from cycle consistency. Given a forward mapping $$F:X \rightarrow Y$$ and a backward mapping $$G: Y \rightarrow X$$, we define cycle consistency score as the similarity between the original input $$x$$ and its reconstruction $$G(F(x))$$. This score serves as a proxy for preference: higher cycle consistency indicates a preferred output. This provides a more scalable and cheaper signal for learning image-text alignment compared to human supervision. We construct CyclePrefDB, a preference dataset of 866K comparison pairs across image-to-text and text-to-image tasks focusing on dense captions. Trained on this dataset, CycleReward matches or surpasses models trained on human or GPT4V feedback.
 
+
+
+## 🚀 Updates
+**06/16/25:** We've now released CycleReward on Hugging Face: 
+
+- [CycleReward-Combo](https://huggingface.co/carolineec/CycleReward-Combo)
+- [CycleReward-I2T](https://huggingface.co/carolineec/CycleReward-I2T)
+- [CycleReward-T2I](https://huggingface.co/carolineec/CycleReward-T2I)
+
 ## Quick Start
 Install with pip:
 
