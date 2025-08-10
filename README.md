@@ -3,7 +3,7 @@
 
 [Hyojin Bahng](https://hjbahng.github.io/)\*, [Caroline Chan](https://people.csail.mit.edu/cmchan/)\*, [Fredo Durand](https://people.csail.mit.edu/fredo/), [Phillip Isola](https://web.mit.edu/phillipi/).<br>
 (*Equal contribution, alphabetical order.)<br>
-MIT CSAIL.
+MIT CSAIL, published at [ICCV 2025](https://iccv.thecvf.com/).
 
 <p align="center">
     <img src="images/teaser.jpg" width="1000px">
