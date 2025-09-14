@@ -127,10 +127,10 @@ To train CycleReward, refer to the training scripts `scripts/train_**.sh`.
 ## Citation
 If you find our work or any of our materials useful, please cite our paper:
 ```
-@article{bahng2025cycle,
+@inproceedings{bahng2025cycle,
     title={Cycle Consistency as Reward: Learning Image-Text Alignment without Human Preferences},
     author= {Bahng, Hyojin and Chan, Caroline and Durand, Fredo and Isola, Phillip},
-    journal={arXiv preprint arXiv:2506.02095},
+    journal={Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
     year={2025}
 }
 ```
